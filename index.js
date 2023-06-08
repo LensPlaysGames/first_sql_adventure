@@ -1,33 +1,33 @@
 let sql = require("sqlite3");
 let db_path = "./xxtestxx.db";
 let db = new sql.Database(db_path, sql.OPEN_READWRITE, (err) => {
-    if (!err) return;
-    if (err.code == "SQLITE_CANTOPEN") {
-        createDatabase()
-        return;
+    if (err) {
+        if (err.code == "SQLITE_CANTOPEN") {
+            createDatabase()
+            return;
+        }
+        console.log(`SQLITE3: Error opening database -- ${err}`);
+        exit(1);
     }
-    console.log("SQLITE3: Error opening database -- " + err);
-    exit(1);
-});
-
-let query = `
+    let query = `
     SELECT items.item_id, items.item_index, items.item_creator_id, items.item_name, items.item_url, creator_addresses.creator_address
     FROM ITEMS
     INNER JOIN creator_addresses ON items.item_creator_id = creator_addresses.item_creator_id`
-db.all(query, (err, rows) => {
-    if (err) {
-        console.log("SQLITE3: Error querying database -- " + err);
-        exit(1);
-    }
-    console.log("item_id:idx\tcreator_id\titem_name\titem_url\tcreator_address")
-    rows.forEach(row => {
-        console.log(row.item_id + ":" + row.item_index + "\t" + row.item_creator_id + "\t\t" + row.item_name + "\t" + row.item_url + "\t" + row.creator_address);
+    db.all(query, (err, rows) => {
+        if (err) {
+            console.log(`SQLITE3: Error querying database -- ${err}`);
+            exit(1);
+        }
+        console.log("item_id:idx\tcreator_id\titem_name\titem_url\tcreator_address")
+        rows.forEach(row => {
+            console.log(`${row.item_id}:${row.item_index}\t${row.item_creator_id}\t\t${row.item_name}\t${row.item_url}\t${row.creator_address}`);
+        });
     });
+
+    print_all_items_given_owner(1072)
+
+    db.close()
 });
-
-print_all_items_given_owner(1072)
-
-db.close()
 
 function print_all_items_given_owner(owner) {
     let query = `

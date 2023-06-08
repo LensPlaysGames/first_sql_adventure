@@ -30,6 +30,7 @@ let db = new sql.Database(db_path, sql.OPEN_READWRITE, (err) => {
 });
 
 function print_all_items_given_owner(owner) {
+    if (typeof(owner) !== "number" || !Number.isInteger(owner)) return;
     let query = `
     SELECT items.item_index, items.item_owner_id, items.item_name, items.item_url
     FROM ITEMS

@@ -58,28 +58,28 @@ function createDatabase() {
     // people may own the same item, but each person will own an item with
     // a unique item_index.
     db.exec(`
-    create table items (
-        item_id int primary key not null,
-        item_creator_id int not null,
-        item_owner_id int not null,
-        item_name text not null,
-        item_index int not null,
-        item_url text not null
+    CREATE TABLE items (
+        item_id INT PRIMARY KEY NOT NULL,
+        item_creator_id INT NOT NULL,
+        item_owner_id INT NOT NULL,
+        item_name TEXT NOT NULL,
+        item_index INT NOT NULL,
+        item_url TEXT NOT NULL
     );
-    insert into items (item_id, item_creator_id, item_owner_id, item_name, item_index, item_url)
-        values (1, 1, 1072, 'Thunderous Bolt', 1, 'https://www.gameone.server.io/items/thunderousbolt'),
+    INSERT INTO items (item_id, item_creator_id, item_owner_id, item_name, item_index, item_url)
+        VALUES (1, 1, 1072, 'Thunderous Bolt', 1, 'https://www.gameone.server.io/items/thunderousbolt'),
                (2, 1, 2489, 'Fireball', 1, 'https://www.gameone.server.io/items/fireball'),
                (3, 1, 738, 'Icy Storm', 1, 'https://www.gameone.server.io/items/icystorm'),
                (4, 3, 642, 'Cantankerous Brew', 1, 'https://www.gamethree.net/item4'),
                (5, 1, 1072, 'Thunderous Bolt', 2, 'https://www.gameone.server.io/items/thunderousbolt'),
                (6, 3, 1072, 'Thick Branch', 1, 'https://www.gamethree.net/item5');
 
-    create table creator_addresses (
-        item_creator_id int primary key not null,
-        creator_address text unique not null
+    CREATE TABLE creator_addresses (
+        item_creator_id INT PRIMARY KEY NOT NULL,
+        creator_address TEXT UNIQUE NOT NULL
     );
 
-    insert into creator_addresses (item_creator_id, creator_address)
+    INSERT INTO creator_addresses (item_creator_id, creator_address)
         values (1, '0xdeadbeef'),
                (2, '0xcafed00d'),
                (3, '0xf00d6969');

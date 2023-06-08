@@ -1,0 +1,12 @@
+* Lens_r's First SQL Adventure
+
+I didn't know too much about databases, and have little direct experience with them. So this changes that, I guess :).
+
+** Getting Started
+
+I don't know why you care to run this silly little program I made as a learning excercise, but if you do, here's how.
+
+#+begin_src sh
+  npm install
+  npm run start
+#+end_src

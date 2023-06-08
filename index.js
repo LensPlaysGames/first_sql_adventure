@@ -81,7 +81,7 @@ function createDatabase() {
     );
 
     INSERT INTO creator_addresses (item_creator_id, creator_address)
-        values (1, '0xdeadbeef'),
+        VALUES (1, '0xdeadbeef'),
                (2, '0xcafed00d'),
                (3, '0xf00d6969');
     `);

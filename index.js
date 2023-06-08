@@ -9,13 +9,17 @@ let db = new sql.Database(db_path, sql.OPEN_READWRITE, (err) => {
     console.log("SQLITE3: Error opening database -- " + err);
     exit(1);
 });
-db.all(`select hero_name, is_xman, was_snapped from hero h
-   inner join hero_power hp on h.hero_id = hp.hero_id
-   where hero_power = ?`, "Total Nerd", (err, rows) => {
-       rows.forEach(row => {
-           console.log(row.hero_name + "\t" +row.is_xman + "\t" +row.was_snapped);
-       });
-   });
+
+db.all(`select item_id, item_creator_id, item_name, item_url from items i`, (err, rows) => {
+    if (err) {
+        console.log("SQLITE3: Error querying database -- " + err);
+        exit(1);
+    }
+    console.log("item_id\tcreator_id\titem_name\titem_url")
+    rows.forEach(row => {
+        console.log(row.item_id + "\t" + row.item_creator_id + "\t\t" + row.item_name + "\t" +row.item_url);
+    });
+});
 
 db.close()
 
@@ -27,28 +31,26 @@ function createDatabase() {
         }
     });
     db.exec(`
-    create table hero (
-        hero_id int primary key not null,
-        hero_name text not null,
-        is_xman text not null,
-        was_snapped text not null
+    create table items (
+        item_id int primary key not null,
+        item_creator_id int not null,
+        item_owner_id int not null,
+        item_name text not null,
+        item_url text not null
     );
-    insert into hero (hero_id, hero_name, is_xman, was_snapped)
-        values (1, 'Spiderman', 'N', 'Y'),
-               (2, 'Tony Stark', 'N', 'N'),
-               (3, 'Jean Grey', 'Y', 'N');
+    insert into items (item_id, item_creator_id, item_owner_id, item_name, item_url)
+        values (1, 1, 1072, 'Thunderous Bolt', 'https://www.gameone.server.io/items/thunderousbolt'),
+               (2, 1, 738, 'Fireball', 'https://www.gameone.server.io/items/fireball'),
+               (3, 1, 2489, 'Icy Storm', 'https://www.gameone.server.io/items/icystorm');
 
-    create table hero_power (
-        hero_id int not null,
-        hero_power text not null
+    create table creator_addresses (
+        item_creator_id int primary key not null,
+        creator_address text unique not null
     );
 
-    insert into hero_power (hero_id, hero_power)
-        values (1, 'Web Slinging'),
-               (1, 'Super Strength'),
-               (1, 'Total Nerd'),
-               (2, 'Total Nerd'),
-               (3, 'Telepathic Manipulation'),
-               (3, 'Astral Projection');
+    insert into creator_addresses (item_creator_id, creator_address)
+        values (1, '0xdeadbeef'),
+               (2, '0xcafed00d'),
+               (3, '0xf00d6969');
     `);
 }
